@@ -18,3 +18,4 @@ public class CountryCurrencyData {
   private String currencyShortName;
   private Double amount;
 }
+
