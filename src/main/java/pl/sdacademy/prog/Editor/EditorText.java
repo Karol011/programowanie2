@@ -46,6 +46,9 @@ public class EditorText {
         }
     }
 
+    public void restoreFromMemento(final EditorTextMemento memento) {
+        editorTextValues = new TreeMap<>(memento.getSavedEditorTextValues());
+    }
 
 
 }
