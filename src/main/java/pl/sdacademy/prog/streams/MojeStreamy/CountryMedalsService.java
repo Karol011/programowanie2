@@ -73,6 +73,7 @@ public class CountryMedalsService {
                 .collect(Collectors.toList());
     }
 
+
     public CountryMedals hasMostMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 .max(Comparator.comparing(CountryMedals::totalMedalsCount))
