@@ -6,22 +6,16 @@ public class TextModificationDemo {
     public static void main(String[] args) {
 
         final CustomCommandLineParser parser = new CustomCommandLineParser();
+        final FileContentReader reader = new FileContentReader();
+        final TextModificationStrategySelector selector = new TextModificationStrategySelector();
+        final TextModificationProcessFacade facade = new TextModificationProcessFacade(
+                parser, reader, selector);
         try {
-            parser.parse(args);
+            System.out.println(facade.process(args));
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return;
         }
-
-
-        String filePath = parser.getFileOptionValue().get();
-        String modificationType = parser.getTypeOptionValue().get();
-        TextModificationStrategySelector selector = new TextModificationStrategySelector();
-        TextModificationStrategy strategy = selector.getTextModificationStrategy(modificationType);
-        FileContentReader fileContentReader = new FileContentReader();
-        String textToModify = fileContentReader.readContent(filePath);
-        String output = strategy.modify(textToModify);
-
-        System.out.println(output);
 
 
     }
