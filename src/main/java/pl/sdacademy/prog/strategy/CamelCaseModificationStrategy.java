@@ -14,9 +14,6 @@ public class CamelCaseModificationStrategy implements TextModificationStrategy {
     }
 
 
-
-
-
     @Override
     public String modify(final String input) {
         final StringBuilder output = new StringBuilder(input.length());
