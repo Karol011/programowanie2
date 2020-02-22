@@ -1,7 +1,6 @@
 package pl.sdacademy.prog.Editor;
 
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 public class EditorText {
 
