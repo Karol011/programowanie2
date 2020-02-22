@@ -14,11 +14,7 @@ public class TextModificationDemo {
             System.out.println(facade.process(args));
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            return;
         }
 
-
     }
-
-
 }
