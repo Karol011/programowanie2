@@ -1,4 +1,4 @@
-package pl.sdacademy.prog.Editor;
+package pl.sdacademy.prog.memento;
 
 public class EditorDemo {
     public static void main(String[] args) {

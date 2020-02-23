@@ -1,4 +1,4 @@
-package pl.sdacademy.prog.Editor;
+package pl.sdacademy.prog.memento;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
