@@ -1,8 +1,12 @@
 package pl.sdacademy.prog.Observer;
 
 public class ValueLoweredObserver extends Observer {
-    @Override
-    public void update() {
 
+    public ValueLoweredObserver(final Subject subject) {
+        super(subject);
+    }
+
+    @Override
+    public void update(int value) {
     }
 }

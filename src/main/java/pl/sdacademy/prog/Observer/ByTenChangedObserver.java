@@ -1,8 +1,12 @@
 package pl.sdacademy.prog.Observer;
 
 public class ByTenChangedObserver extends Observer {
-    @Override
-    public void update() {
 
+    public ByTenChangedObserver(final Subject subject) {
+        super(subject);
+    }
+
+    @Override
+    public void update(int value) {
     }
 }
