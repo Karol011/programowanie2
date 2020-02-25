@@ -6,12 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CountryMedalsService {
 
+    private static final int COUNTRY_SHORT_NAME_INDEX = 0;
+    private static final int COUNTRY_GOLD_MEDALS_COUNT_INDEX = 1;
+    private static final int COUNTRY_SILVER_MEDALS_COUNT_INDEX = 2;
+    private static final int COUNTRY_BRONZE_MEDALS_COUNT_INDEX = 3;
+    private static final int COUNTRY_FOURTH_PLACES_COUNT_INDEX = 4;
+    private static final int NUMBER_OF_ALL_COUNTRY_PARAMETERS = 5;
+    private static final int DEFAULT_VALUE_OF_FOURTH_PLACES = 0;
 
     private static final int POINTS_FOR_GOLD_MEDALS = 3;
     private static final int POINTS_FOR_SILVER_MEDALS = 2;
@@ -32,68 +37,73 @@ public class CountryMedalsService {
     private CountryMedals toCountryMedals(final String[] args) {
 
         CountryMedals countryMedals = new CountryMedals();
-        countryMedals.setCountryShortName(args[0]);
-        countryMedals.setGoldMedalCount(Integer.parseInt(args[1]));
-        countryMedals.setSilverMedalCount(Integer.parseInt(args[2]));
-        countryMedals.setBronzeMedalCount(Integer.parseInt(args[3]));
-        if (args.length == 5) {
-            countryMedals.setFourthPlacesCount(Integer.parseInt(args[4]));
+        countryMedals.setCountryShortName(args[COUNTRY_SHORT_NAME_INDEX]);
+        countryMedals.setGoldMedalCount(Integer.parseInt(args[COUNTRY_GOLD_MEDALS_COUNT_INDEX]));
+        countryMedals.setSilverMedalCount(Integer.parseInt(args[COUNTRY_SILVER_MEDALS_COUNT_INDEX]));
+        countryMedals.setBronzeMedalCount(Integer.parseInt(args[COUNTRY_BRONZE_MEDALS_COUNT_INDEX]));
+        if (args.length == NUMBER_OF_ALL_COUNTRY_PARAMETERS) {
+            countryMedals.setFourthPlacesCount(Integer.parseInt(args[COUNTRY_FOURTH_PLACES_COUNT_INDEX]));
         } else {
-            countryMedals.setFourthPlacesCount(0);
+            countryMedals.setFourthPlacesCount(DEFAULT_VALUE_OF_FOURTH_PLACES);
         }
         return countryMedals;
     }
 
-    public List<CountryMedals> hasAtLeastOneGoldMedal(List<CountryMedals> countryMedalsList) {
+    public List<CountryMedals> getCountriesWithAtLeastOneMedal(List<CountryMedals> countryMedalsList) {
 
         return countryMedalsList.stream()
                 .filter(countryMedals -> countryMedals.getGoldMedalCount() > 0)
                 .collect(Collectors.toList());
     }
 
-    public List<CountryMedals> hasAnyMedal(List<CountryMedals> countryMedalsList) {
+    public List<CountryMedals> getCountriesWithAnyMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 .filter(c -> (c.getGoldMedalCount() + c.getSilverMedalCount() + c.getBronzeMedalCount()) > 0)
                 .collect(Collectors.toList());
     }
 
-    public List<String> hasMostGoldMedals(List<CountryMedals> countryMedalsList) {
+    public List<String> getCountriesWhichWonMostGoldMedals(List<CountryMedals> countryMedalsList) {
 
         return countryMedalsList.stream()
                 .collect(Collectors.groupingBy(CountryMedals::getGoldMedalCount)).entrySet().stream()
                 .max(Comparator.comparing(Map.Entry::getKey))
                 .map(Map.Entry::getValue)
-                .map(CountryMedalsService::toCountryName)
+                .map(this::toCountryName)
                 .orElseGet(List::of);
-   }
+    }
 
-    private static List<String> toCountryName(List<CountryMedals> countryMedals) {
+    private List<String> toCountryName(List<CountryMedals> countryMedals) {
         return countryMedals.stream()
                 .map(CountryMedals::getCountryShortName)
                 .collect(Collectors.toList());
     }
 
-
-    public CountryMedals hasMostMedals(List<CountryMedals> countryMedalsList) {
+    public List<String> getCountriesWithMostMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
-                .max(Comparator.comparing(CountryMedals::totalMedalsCount))
-                .get();
+                .collect(Collectors.groupingBy(CountryMedals::getTotalMedalsCount)).entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .map(this::toCountryName)
+                .orElseThrow(() -> new SdaException("No such element"));
     }
 
-    public Optional<CountryMedals> hasMostFourthPlaces(List<CountryMedals> countryMedalsList) {
+    public List<String> getCountriesWithMostFourthPlaces(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
-                .max(Comparator.comparing(CountryMedals::getFourthPlacesCount));
-        //   .get();
+                .collect(Collectors.groupingBy(CountryMedals::getFourthPlacesCount)).entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .map(this::toCountryName)
+                .orElseThrow(() -> new SdaException("No such element"));
     }
 
-    public List<CountryMedals> countriesWithMoreSilverThanGoldMedals(List<CountryMedals> countryMedalsList) {
+    public List<CountryMedals> getCountriesWithMoreSilverThanGoldMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 .filter(countryMedals -> countryMedals.getSilverMedalCount() > countryMedals.getGoldMedalCount())
                 .collect(Collectors.toList());
 
     }
 
-    public List<CountryMedals> countriesWithMoreBronzeThanSilverAndMoreSilverThanGoldMedals(List<CountryMedals> countryMedalsList) {
+    public List<CountryMedals> getCountriesWithMoreBronzeThanSilverAndMoreSilverThanGoldMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 .filter(countryMedals -> countryMedals.getSilverMedalCount() > countryMedals.getGoldMedalCount() &&
                         countryMedals.getBronzeMedalCount() > countryMedals.getSilverMedalCount())
@@ -101,12 +111,12 @@ public class CountryMedalsService {
 
     }
 
-    public Map<String, Integer> howManyMedalsCountryHas(List<CountryMedals> countryMedalsList) {
+    public Map<String, Integer> getHowManyMedalsCountryHas(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
-                .collect(Collectors.toMap(CountryMedals::getCountryShortName, CountryMedals::totalMedalsCount));
+                .collect(Collectors.toMap(CountryMedals::getCountryShortName, CountryMedals::getTotalMedalsCount));
     }
 
-    public Long mostCommonNumbersOfGoldMedals(List<CountryMedals> countryMedalsList) {
+    public Long getMostCommonNumbersOfGoldMedals(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 //przeksztalcam na mape: ilosc zlotych medali:ilosc wystapien
                 .collect(Collectors.groupingBy(CountryMedals::getGoldMedalCount, Collectors.counting()))
@@ -116,15 +126,15 @@ public class CountryMedalsService {
                 .max(Comparator.comparing(Map.Entry::getValue))
                 //zmieniam typ z Map<K,V> na wartosc
                 .map(Map.Entry::getValue)
-                .orElse(null);
+                .orElseThrow(() -> new SdaException("No such value"));
     }
 
-    public Map.Entry<String, Integer> mostPointsAccordingToGoldSilverAndBronzeMedalsCount(List<CountryMedals> countryMedalsList) {
+    public Map.Entry<String, Integer> getCountriesWithMostPointsAccordingToGoldSilverAndBronzeMedalsCount(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
                 .collect(Collectors.toMap(CountryMedals::getCountryShortName, CountryMedalsService::calculatePointsAccordingToGoldSilverAndBronzeMedalsCount))
                 .entrySet().stream()
                 .max(Comparator.comparing(Map.Entry::getValue))
-                .get();
+                .orElseThrow(() -> new SdaException("No such element"));
 
     }
 
@@ -136,7 +146,7 @@ public class CountryMedalsService {
 
     public int countMedalsAquiredByAllCountries(List<CountryMedals> countryMedalsList) {
         return countryMedalsList.stream()
-                .mapToInt(CountryMedals::totalMedalsCount)
+                .mapToInt(CountryMedals::getTotalMedalsCount)
                 .sum();
     }
 

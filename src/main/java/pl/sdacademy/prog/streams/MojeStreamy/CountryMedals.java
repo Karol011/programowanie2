@@ -19,9 +19,10 @@ public class CountryMedals {
     private int bronzeMedalCount;
     private int fourthPlacesCount;
 
-    int totalMedalsCount() {
+    public int getTotalMedalsCount() {
         return this.getGoldMedalCount() + this.getSilverMedalCount() + this.getBronzeMedalCount();
     }
+
     public List<String> toCountryName(List<CountryMedals> countryMedals) {
         return countryMedals.stream()
                 .map(CountryMedals::getCountryShortName)
