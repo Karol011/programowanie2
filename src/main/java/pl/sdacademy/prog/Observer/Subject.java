@@ -30,7 +30,6 @@ public class Subject {
 
         for (Observer observer : observerList) {
             observer.update(value);
-            //todo figure out how to inform valueLoweredObserver and ByTenChangeObserver
         }
 
     }

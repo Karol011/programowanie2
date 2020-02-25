@@ -16,7 +16,9 @@ public class Demo {
         observers.add(byTenChangedObserver);
 
 
-        subject.changeValue(5);
+        subject.changeValue(20);
+        subject.changeValue(23);
+        subject.changeValue(34);
         subject.changeValue(10);
     }
 }

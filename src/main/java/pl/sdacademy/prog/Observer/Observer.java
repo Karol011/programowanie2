@@ -1,7 +1,7 @@
 package pl.sdacademy.prog.Observer;
 
 public abstract class Observer {
-    private Subject subject;
+    public Subject subject;
 
     public abstract void update(int value);
 
