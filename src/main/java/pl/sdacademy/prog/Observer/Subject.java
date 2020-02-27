@@ -2,8 +2,7 @@ package pl.sdacademy.prog.Observer;
 
 import lombok.Getter;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -19,6 +18,10 @@ public class Subject {
 
     public void registerObserver(Observer observer) {
         observerList.add(observer);
+    }
+
+    public void registerObserver(Observer... observers) {
+        observerList.addAll(Arrays.asList(observers));
     }
 
     public void changeValue(int value) {
