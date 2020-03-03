@@ -1,25 +1,24 @@
 package pl.sdacademy.prog.proxy;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 
 public class ConfigLoaderProxy implements ConfigLoader {
 
-    private ConfigLoader proxy;
+    private final ConfigLoader configLoader;
+    private String configuration;
+
+    public ConfigLoaderProxy(final ConfigLoader configLoader) {
+        this.configLoader = configLoader;
+    }
 
     @Override
     public String load() {
-        if (proxy == null) {
-            proxy = new ConfigLoaderImplementation("www.blablA.com");
-            return proxy.load();
-
-        } else {
-            return proxy.load();
+        if (configuration == null) {
+            configuration = configLoader.load();
         }
-        //todo
-
+        return configuration;
     }
 }
 

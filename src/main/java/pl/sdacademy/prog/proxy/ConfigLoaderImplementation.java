@@ -17,14 +17,14 @@ public class ConfigLoaderImplementation implements ConfigLoader {
 
     @Override
     public String load() {
+        System.out.println("Getting configuration from " + serverUrl);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new SdaException("Sleeping canceled!", e);
         }
         System.out.println("Configuration from " + getServerUrl() + " downloaded successfully");
-        String generatedConfiguration = RandomStringUtils.randomAlphabetic(10);
-        setConfiguration(generatedConfiguration);
-        return generatedConfiguration;
+        configuration = RandomStringUtils.randomAlphabetic(10);
+        return configuration;
     }
 }
