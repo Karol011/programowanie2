@@ -9,4 +9,12 @@ public class Apple extends Fruit {
     this.weight = weight;
     this.color = new Random().nextBoolean() ? "GREEN" : "RED";
   }
+
+  @Override
+  public String toString() {
+    return "Apple{" +
+            "color='" + color + '\'' +
+            ", weight=" + weight +
+            '}';
+  }
 }
