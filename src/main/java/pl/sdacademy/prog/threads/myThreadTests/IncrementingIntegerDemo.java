@@ -19,12 +19,13 @@ public class IncrementingIntegerDemo implements Runnable {
     }
 
 
-
     @Override
     public void run() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; number.getNumber() < 100; i++) {
             number.increment();
-            System.out.println(number.getNumber() + " in thread "+ Thread.currentThread().getName());
+            System.out.println(number.getNumber() + " in thread " + Thread.currentThread().getName());
+
         }
     }
+
 }

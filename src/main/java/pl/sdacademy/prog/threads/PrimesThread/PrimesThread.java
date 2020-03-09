@@ -31,7 +31,7 @@ public class PrimesThread implements Runnable {
     }
 
     private boolean isPrime(final int valueToCheck) {
-        for (int i = 2; i < valueToCheck / 2; i++) {
+        for (int i = 2; i <=valueToCheck / 2; i++) {
             if (valueToCheck % i == 0) {
                 return false;
             }
@@ -39,3 +39,5 @@ public class PrimesThread implements Runnable {
         return true;
     }
 }
+
+

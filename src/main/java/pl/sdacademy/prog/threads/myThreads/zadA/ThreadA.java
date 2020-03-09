@@ -1,6 +1,7 @@
 package pl.sdacademy.prog.threads.myThreads.zadA;
 
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
 
 public class ThreadA implements Runnable {
 
@@ -22,31 +23,32 @@ public class ThreadA implements Runnable {
     @Override
     public void run() {
         try {
-                Thread.sleep(1000);
-                System.out.println(getName() + " budzi sie");
-                isMomCalling();
-                Thread.sleep(2000);
-                System.out.println(getName() + " wraca ze szkoly");
-                isMomCalling();
-                Thread.sleep(5000);
-                System.out.println(getName() + " przygotowuje sniadanie");
-                isMomCalling();
-                Thread.sleep(1000);
-                System.out.println(getName() + " je obiad");
-                isMomCalling();
-                Thread.sleep(2000);
-                System.out.println(getName() + " odrabia lekcje");
+            Thread.sleep(1000);
+            System.out.println(getName() + " budzi sie");
+            isMomCalling();
+            Thread.sleep(2000);
+            System.out.println(getName() + " wraca ze szkoly");
+            isMomCalling();
+            Thread.sleep(5000);
+            System.out.println(getName() + " przygotowuje sniadanie");
+            isMomCalling();
+            Thread.sleep(1000);
+            System.out.println(getName() + " je obiad");
+            isMomCalling();
+            Thread.sleep(2000);
+            System.out.println(getName() + " odrabia lekcje");
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void isMomCalling() {
+    private void isMomCalling() throws InterruptedException {
         Random chanceOFMomCalling = new Random();
         isMomCalling = chanceOFMomCalling.nextBoolean();
         if (isMomCalling) {
             System.out.println(getName() + " pora uciekac, tesciowa dzwoni");
+            Thread.currentThread().join();
         }
     }
 }

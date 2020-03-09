@@ -13,7 +13,6 @@ public class CountDownLatchDemo {
                 .generate(() -> new Thread(new CountDownLatchThread(countDownLatch)))
                 .limit(cdlCounter)
                 .collect(Collectors.toList());
-
         threads.forEach(Thread::start);
         threads.forEach(tr -> {
             try {
